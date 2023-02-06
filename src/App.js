@@ -52,7 +52,7 @@ const [admin,setadmin] = useState(false)
   return (
     <div>
       <Navbar clickactive={clickactive} active={active} user={user} admin={admin} adminsetting={adminsetting} />
-      {active === "home" && <Page />}
+      {active === "home" && <Page clickactive= {clickactive} />}
       {active === "admin" && <Admin user={user} />}
       {active === "journey" && <Journey />}
       {active === "contact" && <Contact />}

@@ -17,6 +17,7 @@ function App() {
   const [active, setactive] = useState("home");
   const [product, SetProduct] = useState([]);
   const [user,setUser] = useState([])
+const [items, setItems] = useState([]);
   useEffect(() => {
     const data = window.localStorage.getItem("loggedinUser");
     if (data !== null) setUser(JSON.parse(data));
@@ -29,7 +30,12 @@ function App() {
     SetProduct(e);
   };
   console.log(active)
-
+ const newcartitem = (product)=>{
+  setItems((oldArray) => [...oldArray, product]);
+ }
+  const removeanitem = (list) => {
+    setItems(list);
+  };
   return (
     <div>
       <Navbar clickactive={clickactive} active={active} user={user} />
@@ -41,6 +47,9 @@ function App() {
         <Store
           clickactive={clickactive}
           active={active}
+          items={items}
+          removeanitem={removeanitem}
+          newcartitem={newcartitem}
           clickproduct={clickproduct}
         />
       )}
@@ -48,11 +57,16 @@ function App() {
         <DesignSpace
           product={product}
           user={user}
+          items={items}
           clickactive={clickactive}
           active={active}
+          removeanitem={removeanitem}
+          newcartitem={newcartitem}
         />
       )}
-      {active === "login" && <LoginModal clickactive={clickactive} user={user} setUser={setUser} />}
+      {active === "login" && (
+        <LoginModal clickactive={clickactive} user={user} setUser={setUser} />
+      )}
     </div>
   );
 }

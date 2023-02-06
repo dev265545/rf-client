@@ -8,8 +8,12 @@ import Cart from "./Cart";
 function isInt(n) {
   return n % 1 === 0;
 }
-function DesignSpace({product,clickactive,user}) {
+function DesignSpace({product,clickactive,user,items,newcartitem,removeanitem}) {
   const [listofProudcts, setListofProduct] = useState([]);
+  
+  const additem = ()=>{
+    newcartitem(product)
+  }
 
   useEffect(() => {
     axios.get("http://localhost:8080/products").then((response) => {
@@ -20,19 +24,20 @@ function DesignSpace({product,clickactive,user}) {
   console.log(listofProudcts);
   let cart;
   const addtocart = ()=>{
-    cart = product?.cart + ";" + product?.id;
-    const databody = {
-     cart :  cart,
-     email : user?.email
-    };
-    axios
-      .post("http://localhost:8080/users/addtocart", databody)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    additem()
+    // cart = product?.cart + ";" + product?.id;
+    // const databody = {
+    //  cart :  cart,
+    //  email : user?.email
+    // };
+    // axios
+    //   .post("http://localhost:8080/users/addtocart", databody)
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   }
   return (
     <div className="grid p-3 grid-cols-4 gap-10 font-productsans">
@@ -51,7 +56,7 @@ function DesignSpace({product,clickactive,user}) {
           </p>
           <div className=" gap-3 inline-flex ">
             <button
-            onClick={()=>addtocart()}
+              onClick={() => addtocart()}
               type="button"
               class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
@@ -142,7 +147,7 @@ function DesignSpace({product,clickactive,user}) {
                           7
                         </div>
                         <div className="w-8 border  border-black items-center justify-center flex h-8">
-                          8 
+                          8
                         </div>
                         <div className="w-8 border  border-black items-center justify-center flex h-8">
                           9
@@ -193,8 +198,14 @@ function DesignSpace({product,clickactive,user}) {
           </div>
         </div>
       </div>
-      <div className="shadow-lg rounded-lg p-4 ">Cart
-      <Cart user={user} /> </div>
+      <div className="shadow-lg rounded-lg p-4 ">
+        Cart
+        <Cart
+          items={items}
+          newcartitem={newcartitem}
+          removeanitem={removeanitem}
+        />{" "}
+      </div>
     </div>
   );
 }

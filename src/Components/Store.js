@@ -1,24 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import {FiFilter} from "react-icons/fi"
+import {FiFilter,} from "react-icons/fi"
+import {RiFilterOffFill} from "react-icons/ri"
 import {BsSearch} from "react-icons/bs"
 import axios from 'axios';
 import {FaStar, FaStarHalf} from "react-icons/fa"
 import DesignSpace from './DesignSpace';
+import Cart from './Cart';
 function isInt(n) {
   return n % 1 === 0;
 }
-function Store({ clickactive, active ,  clickproduct }) {
+function Store({
+  clickactive,
+  active,
+  clickproduct,
+  items,
+  newcartitem,
+  removeanitem}) {
   const [listofProudcts, setListofProduct] = useState([]);
-  const [pricerange,setpricerange] = useState([])
+  const [priceTo, setpriceTo] = useState(100000000);
+  const [priceFrom, setpriceFrom] = useState(0);
+  const [type, setType] = useState("null");
 
-  
   const [design, setdesign] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/products").then((response) => {
-      setListofProduct(response.data);
-    });
-  }, []);
+    if (type !== "null") {
+      axios
+        .get(
+          `http://localhost:8080/products/type?priceFrom=${priceFrom}&priceTo=${priceTo}&type=${type}`
+        )
+        .then((response) => {
+          setListofProduct(response.data);
+        });
+    } else {
+      axios
+        .get(
+          `http://localhost:8080/products?priceFrom=${priceFrom}&priceTo=${priceTo}`
+        )
+        .then((response) => {
+          setListofProduct(response.data);
+        });
+    }
+  }, [priceFrom, priceTo, type]);
 
   console.log(listofProudcts);
   return (
@@ -28,21 +51,80 @@ function Store({ clickactive, active ,  clickproduct }) {
           <p className="font-productsans flex-1 text-2xl">Filters</p>
 
           <FiFilter className="text-xl" />
+          <RiFilterOffFill
+            onClick={() => {
+              setpriceFrom(0);
+              setpriceTo(10000000);
+              setType("null");
+            }}
+            className="text-xl"
+          />
         </div>
         <div className=" flex flex-col mt-4">
-          <p className="font-productsans text-2xl">Cost</p>
+          <p className="font-productsans text-2xl">Type</p>
           <div className="grid grid-rows-3 gap-2">
             <div className="flex flex-row gap-2">
-              <input onClick={(e)=>{setpricerange(4000)}} type="checkbox"></input>
-              Rs. 1500-4000
+              <input
+                onClick={(e) => {
+                  setType("sneakers");
+                }}
+                name="type"
+                type="radio"
+                checked={type === "sneakers"}
+              ></input>
+              Sneakers
             </div>
             <div className="flex flex-row gap-2">
-              <input type="checkbox"></input>
-              Rs. 4001-7000
+              <input
+                checked={type === "loafers"}
+                name="type"
+                onClick={(e) => {
+                  setType("loafers");
+                }}
+                type="radio"
+              ></input>
+              Loafers
             </div>
-            <div className="flex flex-row gap-2">
-              <input type="checkbox"></input>
-              Rs. 7001 and more
+          </div>
+          <div className=" flex flex-col mt-4">
+            <p className="font-productsans text-2xl">Cost</p>
+            <div className="grid grid-rows-3 gap-2">
+              <div className="flex flex-row gap-2">
+                <input
+                  onClick={(e) => {
+                    setpriceFrom(1500);
+                    setpriceTo(4000);
+                  }}
+                  checked={priceFrom === 1500}
+                  name="price"
+                  type="radio"
+                ></input>
+                Rs. 1500-4000
+              </div>
+              <div className="flex flex-row gap-2">
+                <input
+                  name="price"
+                  onClick={(e) => {
+                    setpriceFrom(4001);
+                    setpriceTo(7000);
+                  }}
+                  checked={priceFrom === 4001}
+                  type="radio"
+                ></input>
+                Rs. 4001-7000
+              </div>
+              <div className="flex flex-row gap-2">
+                <input
+                  name="price"
+                  checked={priceFrom === 7001}
+                  onClick={(e) => {
+                    setpriceFrom(7001);
+                    setpriceTo(1000000);
+                  }}
+                  type="radio"
+                ></input>
+                Rs. 7001 and more
+              </div>
             </div>
           </div>
         </div>
@@ -62,9 +144,8 @@ function Store({ clickactive, active ,  clickproduct }) {
                 {listofProudcts.map((product, index) => (
                   <div
                     onClick={() => {
-                     
                       setdesign(true);
-                  clickproduct(product)
+                      clickproduct(product);
                       clickactive("design");
                     }}
                     key={index}
@@ -104,9 +185,14 @@ function Store({ clickactive, active ,  clickproduct }) {
           </div>
         </div>
       </div>
-      <div className="shadow-lg rounded-lg p-4 ">Cart</div>
-
-     
+      <div className="shadow-lg rounded-lg p-4 ">
+        Cart
+        <Cart
+          items={items}
+          newcartitem={newcartitem}
+          removeanitem={removeanitem}
+        />
+      </div>
     </div>
   );
 }

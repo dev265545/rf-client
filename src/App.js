@@ -20,21 +20,28 @@ function App() {
   const [user,setUser] = useState([])
 const [items, setItems] = useState([]);
 const [admin,setadmin] = useState(false)
+
   useEffect(() => {
     const data = window.localStorage.getItem("loggedinUser");
     if (data !== null) setUser(JSON.parse(data));
-    if(user?.email===process.env.adminemail){
-          setadmin(true)
+
+    if (user !== "undefined" && user?.email === "admin@kicksup.com") {
+      setadmin(true);
     }
-  }, []);
-  console.log(user)
+  
+
+  }, [user?.email]);
+ 
+
+  const adminsetting = ()=>{
+    setadmin(false)
+  }
   const clickactive = (e)=>{
     setactive(e)
   }
   const clickproduct = (e) => {
     SetProduct(e);
   };
-  console.log(active)
 
  const newcartitem = (product)=>{
   setItems((oldArray) => [...oldArray, product]);
@@ -44,7 +51,7 @@ const [admin,setadmin] = useState(false)
   };
   return (
     <div>
-      <Navbar clickactive={clickactive} active={active} user={user} admin={admin} />
+      <Navbar clickactive={clickactive} active={active} user={user} admin={admin} adminsetting={adminsetting} />
       {active === "home" && <Page />}
       {active === "admin" && <Admin user={user} />}
       {active === "journey" && <Journey />}

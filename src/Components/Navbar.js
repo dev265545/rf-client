@@ -3,7 +3,7 @@ import React from 'react'
 import logo from "../assets/websitelogo.png"
 import { useState } from 'react';
 
-function Navbar({clickactive,active, user,setUser,admin}) {
+function Navbar({clickactive,active, user,setUser,admin,adminsetting}) {
  const [ LoginModal,setLoginModal] = useState(false)
   console.log("nav",user)
   const clicklogout = ()=>{
@@ -11,6 +11,7 @@ function Navbar({clickactive,active, user,setUser,admin}) {
     window.location.reload(true)
     setUser([])
   }
+  console.log("bb",admin)
 
   return (
     <div>
@@ -85,7 +86,7 @@ function Navbar({clickactive,active, user,setUser,admin}) {
           >
             CONTACT
           </a>
-          {admin && <a
+          { admin && <a
             className={`hover:underline hover:underline-offset-8  ${
               active === "contact"
                 ? "underline underline-offset-8"
@@ -104,6 +105,7 @@ function Navbar({clickactive,active, user,setUser,admin}) {
             <button
               onClick={() => {
                 clicklogout();
+                adminsetting()
               }}
               data-modal-target="authentication-modal"
               data-modal-toggle="authentication-modal"

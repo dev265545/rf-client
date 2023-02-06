@@ -3,7 +3,7 @@ import React from 'react'
 import logo from "../assets/websitelogo.png"
 import { useState } from 'react';
 
-function Navbar({clickactive,active, user,setUser}) {
+function Navbar({clickactive,active, user,setUser,admin}) {
  const [ LoginModal,setLoginModal] = useState(false)
   console.log("nav",user)
   const clicklogout = ()=>{
@@ -17,7 +17,11 @@ function Navbar({clickactive,active, user,setUser}) {
       <nav class="container flex justify-around py-8 mx-auto bg-bg">
         <div class="bg-bg flex items-center">
           <h3 class="text-2xl bg-bg font-medium text-blue-500">
-            <img className="w-10 rounded-full text-bg bg-bg" src={logo} alt="LOGO"></img>
+            <img
+              className="w-10 rounded-full text-bg bg-bg"
+              src={logo}
+              alt="LOGO"
+            ></img>
           </h3>
         </div>
         <div class="  font-productsans items-center hidden space-x-8 lg:flex">
@@ -81,13 +85,26 @@ function Navbar({clickactive,active, user,setUser}) {
           >
             CONTACT
           </a>
+          {admin && <a
+            className={`hover:underline hover:underline-offset-8  ${
+              active === "contact"
+                ? "underline underline-offset-8"
+                : "no-underline"
+            }`}
+            onClick={() => {
+              clickactive("admin");
+            }}
+          >
+          ADMIN
+          </a>}
         </div>
         <div class="flex items-center space-x-2">
           <a href="#"></a>
           {user?.userName ? (
             <button
-              onClick={() =>{clicklogout()
-           }}
+              onClick={() => {
+                clicklogout();
+              }}
               data-modal-target="authentication-modal"
               data-modal-toggle="authentication-modal"
               class="block text-white font-productsans  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

@@ -11,6 +11,7 @@ import Store from "./Components/Store";
 import Page from "./Components/Page";
 import DesignSpace from "./Components/DesignSpace";
 import LoginModal from "./Components/LoginModal";
+import Admin from "./Components/Admin";
 
 
 function App() {
@@ -18,9 +19,13 @@ function App() {
   const [product, SetProduct] = useState([]);
   const [user,setUser] = useState([])
 const [items, setItems] = useState([]);
+const [admin,setadmin] = useState(false)
   useEffect(() => {
     const data = window.localStorage.getItem("loggedinUser");
     if (data !== null) setUser(JSON.parse(data));
+    if(user?.email===process.env.adminemail){
+          setadmin(true)
+    }
   }, []);
   console.log(user)
   const clickactive = (e)=>{
@@ -30,6 +35,7 @@ const [items, setItems] = useState([]);
     SetProduct(e);
   };
   console.log(active)
+
  const newcartitem = (product)=>{
   setItems((oldArray) => [...oldArray, product]);
  }
@@ -38,8 +44,9 @@ const [items, setItems] = useState([]);
   };
   return (
     <div>
-      <Navbar clickactive={clickactive} active={active} user={user} />
+      <Navbar clickactive={clickactive} active={active} user={user} admin={admin} />
       {active === "home" && <Page />}
+      {active === "admin" && <Admin user={user} />}
       {active === "journey" && <Journey />}
       {active === "contact" && <Contact />}
       {active === "team" && <Team />}

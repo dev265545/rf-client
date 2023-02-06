@@ -47,18 +47,22 @@ function Store({
   return (
     <div className="grid p-3 grid-cols-4 gap-10 font-productsans">
       <div className="shadow-2xl rounded-lg p-4 flex flex-col gap-4">
-        <div className="mb-4 flex flex-row ">
+        <div className="mb-4 flex flex-row gap-3 ">
           <p className="font-productsans flex-1 text-2xl">Filters</p>
 
           <FiFilter className="text-xl" />
-          <RiFilterOffFill
+          <button
             onClick={() => {
               setpriceFrom(0);
               setpriceTo(10000000);
               setType("null");
             }}
-            className="text-xl"
-          />
+            type="button"
+            class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          >
+           Clear
+          </button>
+         
         </div>
         <div className=" flex flex-col mt-4">
           <p className="font-productsans text-2xl">Type</p>

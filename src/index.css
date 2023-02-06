@@ -1,13 +1,92 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: "Gobold";
+  src: url("../public/assets/fonts/Gobold_Regular.otf");
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "product_sans";
+  src: url("../public/assets/fonts/Product_Sans.ttf");
+}
+.line {
+    background:gray;
+    position:relative;
+    height:2px;
+}
+.line:before {
+    content:'';
+    background:red;
+    width:30%;
+    height:2px;
+    position:absolute;    
+}
+/* Typewriter effect 1 */
+@keyframes typing {
+  0.0000%, 27.3488% { content: ""; }
+  1.1395%, 26.2093% { content: "s"; }
+  2.2791%, 25.0698% { content: "sh"; }
+  3.4186%, 23.9302% { content: "sho"; }
+  4.5581%, 22.7907% { content: "shoe"; }
+  5.6977%, 21.6512% { content: "shoes"; }
+  30.7674%, 51.1791% { content: "y"; }
+  31.9070%, 50.1395% { content: "yo"; }
+  33.0465%, 49.0000% { content: "you"; }
+  34.1860%, 48.8605% { content: "your"; }
+  35.3256%, 47.7209% { content: "your s"; }
+  36.4651%, 46.5814% { content: "your sh"; }
+  37.6047%, 45.4419% { content: "your sho"; }
+  38.8019%, 44.2093% { content: "your shoe"; }
+  39.8372%, 43.0698% { content: "your shoes"; }
+ 
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typewriter {
+  --caret: currentcolor;
+}
+
+.typewriter::before {
+  content: "";
+  animation: typing 13.5s infinite;
+}
+
+.typewriter::after {
+  content: "";
+  border-right: 1px solid var(--caret);
+  animation: blink 0.5s linear infinite;
+}
+
+.typewriter.thick::after {
+  border-right: 1ch solid var(--caret);
+}
+
+.typewriter.nocaret::after {
+  border-right: 0;
+}
+
+
+@media (prefers-reduced-motion) {
+  .typewriter::after {
+    animation: none;
+  }
+  
+  @keyframes sequencePopup {
+    0%, 100% { content: "developer"; }
+    25% { content: "writer"; }
+    50% { content: "reader"; }
+    75% { content: "human"; }
+  }
+
+  .typewriter::before {
+    content: "developer";
+    animation: sequencePopup 12s linear infinite;
+  }
 }
